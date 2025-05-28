@@ -3,16 +3,16 @@ pipeline {
 
     stages {
         stage("Compile") {
-            step {
+            steps {
                 echo "Code compile started"
-                "sh mvn clean compile"
+                sh "mvn clean compile"
                 echo "compilation completed"
             }
         }
         stage("Test") {
-            step {
+            steps {
                 echo "code test started"
-                "sh mvn clean test"
+                sh "mvn clean test"
                 eho "test completed"
             }
         }
