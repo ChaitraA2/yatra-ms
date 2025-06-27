@@ -29,7 +29,7 @@ pipeline {
         stage("Docker Image Build") {
             steps {
                 echo "Image creation started"
-                sh "docker build -t ${BUILD_IMAGE}"
+                sh "docker build -t ${BUILD_IMAGE} ."
                 echo "Image created successfully"
             }
         }
