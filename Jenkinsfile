@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    environments {
+    environment {
         BUILD_IMAGE = "chaitraa2/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
     }
     stages {
