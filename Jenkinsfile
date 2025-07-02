@@ -52,7 +52,7 @@ pipeline {
                 echo "Tagging the Docker image for ECR: ${env.ECR_BUILD_IMAGE}"
                 sh "docker tag ${env.BUILD_IMAGE} ${env.ECR_BUILD_IMAGE}"
                 echo "Docker Image Tagging Completed"
-                withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: "https://${env.ECR_URL}"]) {
+                withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: "https://${ECR_URL}"]) {
                     echo "Pushing docker Image to ECR: ${env.ECR_IMAGE_NAME}"
                     sh "docker push ${env.ECR_BUILD_IMAGE}"
                     echo "Docker Image Push to ECR Completed"
