@@ -49,13 +49,13 @@ pipeline {
         }
         stage("AWS ECR Push") { 
             steps {
-                echo "Tagging the Docker image for ECR: ${env.ECR_BUILD_IMAGE}"
-                sh "docker tag ${env.BUILD_IMAGE} ${env.ECR_BUILD_IMAGE}"
+                echo "Tagging the Docker image for ECR: ${ECR_BUILD_IMAGE}"
+                sh "docker tag ${BUILD_IMAGE} ${ECR_BUILD_IMAGE}"
                 echo "Docker Image Tagging Completed"
                 withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: "https://${ECR_URL}"]) {
                     echo "https://${ECR_URL}"
                     echo "Pushing docker Image to ECR: ${ECR_BUILD_IMAGE}"
-                    sh "docker push ${env.ECR_BUILD_IMAGE}"
+                    sh "docker push ${ECR_BUILD_IMAGE}"
                     echo "Docker Image Push to ECR Completed"
                 }
             }
