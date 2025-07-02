@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_ACCOUNT_ID = 462367991620
-        REGION = ap-south-1"
+        REGION = "ap-south-1"
         ECR_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         BUILD_IMAGE = "chaitraa2/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
         ECR_BUILD_IMAGE = "${ECR_URL}/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
