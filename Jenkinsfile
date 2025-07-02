@@ -37,7 +37,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CRED', usernameVariable:'DOCKER_USERNAME', passwordVariable:'DOCKER_PASSWORD')]) {
                     echo "Pushing Image to DockerHub started"
-                    sh "docker login -u ${DOCKER_USERNAME} --password-stdin ${DOCKER_PASSWORD}"
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
                     sh "docker push ${BUILD_IMAGE}"
                     echo "Image pushed successfully"
                 }
