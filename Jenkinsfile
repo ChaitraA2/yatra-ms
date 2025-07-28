@@ -60,5 +60,15 @@ pipeline {
                 }
             }
         }
+        stage("Nexus Push") {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
+                    echo "Pushing Image to Nexus started"
+                    sh "docker login  -u ${USERNAME} -p ${PASSWORD}"
+                    sh "docker push ${BUILD_IMAGE}"
+                    echo "Image pushed successfully"
+                }
+            }
+        }
     }
 }
