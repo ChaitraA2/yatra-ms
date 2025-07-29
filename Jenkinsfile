@@ -65,7 +65,9 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
                     echo "Pushing Image to Nexus started"
                     sh "docker login  -u ${USERNAME} -p ${PASSWORD}"
-                    sh "docker push ${BUILD_IMAGE}"
+                    echo "Pushing image to Nexus started"
+                    sh "docker tag ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                    sh "docker push ${NEXUS_BUILD_IMAGE}"
                     echo "Image pushed successfully"
                 }
             }
