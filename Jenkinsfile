@@ -76,7 +76,8 @@ pipeline {
         stage("Delete local Docker Images"){
             steps {
                 echo "Deleting docker images : ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
-                sh "docker rmi ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                // sh "docker rmi ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                sh "docker rmi ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
                 echo "Deleted docker images successfully"
             }
         }       
