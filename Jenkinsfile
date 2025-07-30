@@ -38,29 +38,29 @@ pipeline {
                 echo "Image created successfully"
             }
         }
-        stage("DockerHub Push") {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CRED', usernameVariable:'DOCKER_USERNAME', passwordVariable:'DOCKER_PASSWORD')]) {
-                    echo "Pushing Image to DockerHub started"
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
-                    sh "docker push ${BUILD_IMAGE}"
-                    echo "Image pushed successfully"
-                }
-            }
-        }
-        stage("AWS ECR Push") { 
-            steps {
-                echo "Tagging the Docker image for ECR: ${ECR_BUILD_IMAGE}"
-                sh "docker tag ${BUILD_IMAGE} ${ECR_BUILD_IMAGE}"
-                echo "Docker Image Tagging Completed"
-                withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: "https://${ECR_URL}"]) {
-                    echo "https://${ECR_URL}"
-                    echo "Pushing docker Image to ECR: ${ECR_BUILD_IMAGE}"
-                    sh "docker push ${ECR_BUILD_IMAGE}"
-                    echo "Docker Image Push to ECR Completed"
-                }
-            }
-        }
+        // stage("DockerHub Push") {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'DOCKER_HUB_CRED', usernameVariable:'DOCKER_USERNAME', passwordVariable:'DOCKER_PASSWORD')]) {
+        //             echo "Pushing Image to DockerHub started"
+        //             sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}"
+        //             sh "docker push ${BUILD_IMAGE}"
+        //             echo "Image pushed successfully"
+        //         }
+        //     }
+        // }
+        // stage("AWS ECR Push") { 
+        //     steps {
+        //         echo "Tagging the Docker image for ECR: ${ECR_BUILD_IMAGE}"
+        //         sh "docker tag ${BUILD_IMAGE} ${ECR_BUILD_IMAGE}"
+        //         echo "Docker Image Tagging Completed"
+        //         withDockerRegistry([credentialsId: 'ecr:ap-south-1:ecr-credentials', url: "https://${ECR_URL}"]) {
+        //             echo "https://${ECR_URL}"
+        //             echo "Pushing docker Image to ECR: ${ECR_BUILD_IMAGE}"
+        //             sh "docker push ${ECR_BUILD_IMAGE}"
+        //             echo "Docker Image Push to ECR Completed"
+        //         }
+        //     }
+        // }
         stage("Nexus Push") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
