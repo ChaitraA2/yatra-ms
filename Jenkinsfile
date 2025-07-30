@@ -7,7 +7,7 @@ pipeline {
         // ECR_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         BUILD_IMAGE = "chaitraa2/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
         // ECR_BUILD_IMAGE = "${ECR_URL}/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
-        NEXUS_BUILD_IMAGE ="13.233.37.182:8085/repository/yatra-ms/yatra-ms-v1.${env.BUILD_NUMBER}"
+        NEXUS_BUILD_IMAGE ="13.233.37.182:8085/repository/docker-yatra-ms/yatra-ms-v1.${env.BUILD_NUMBER}"
     }
     stages {
         stage('Compile') {
@@ -65,7 +65,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
                     echo "Pushing Image to Nexus started"
-                    sh "docker login http://13.233.37.182:8085/repository/yatra-ms/ -u ${USERNAME} -p ${PASSWORD}"
+                    sh "docker login http://13.233.37.182:8085/repository/docker-yatra-ms/ -u ${USERNAME} -p ${PASSWORD}"
                     echo "Pushing image to Nexus In Progress"
                     sh "docker tag ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
                     sh "docker push ${NEXUS_BUILD_IMAGE}"
