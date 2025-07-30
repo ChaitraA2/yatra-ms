@@ -65,12 +65,19 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
                     echo "Pushing Image to Nexus started"
                     sh "docker login  -u ${USERNAME} -p ${PASSWORD}"
-                    echo "Pushing image to Nexus started"
+                    echo "Pushing image to Nexus In Progress"
                     sh "docker tag ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
                     sh "docker push ${NEXUS_BUILD_IMAGE}"
                     echo "Image pushed successfully"
                 }
             }
         }
+        stage("Delete local Docker Images"){
+            steps {
+                echo "Deleting docker images : ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                sh "docker rmi ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                echo "Deleted docker images successfully"
+            }
+        }       
     }
 }
