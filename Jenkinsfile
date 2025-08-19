@@ -7,7 +7,7 @@ pipeline {
         // ECR_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
         BUILD_IMAGE = "chaitraa2/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
         // ECR_BUILD_IMAGE = "${ECR_URL}/yatra-ms:yatra-ms-v1.${env.BUILD_NUMBER}"
-        NEXUS_BUILD_IMAGE ="13.233.37.182:8085/repository/docker-yatra-ms/yatra-ms-v1.${env.BUILD_NUMBER}"
+        // NEXUS_BUILD_IMAGE ="13.233.37.182:8085/repository/docker-yatra-ms/yatra-ms-v1.${env.BUILD_NUMBER}"
     }
     stages {
         stage('Compile') {
@@ -30,13 +30,11 @@ pipeline {
                     waitForQualityGate abortPipeline: true
                 }
             }
-        }
-                
-                
+        }        
         stage("Test") {
             steps {
                 echo "code test started"
-//                 sh "mvn clean test"
+                sh "mvn clean test"
                 echo "test completed"
             }
         }
@@ -77,23 +75,23 @@ pipeline {
         //         }
         //     }
         // }
-        stage("Nexus Push") {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
-                    echo "Pushing Image to Nexus started"
-                    sh "docker login http://13.233.37.182:8085/repository/docker-yatra-ms/ -u ${USERNAME} -p ${PASSWORD}"
-                    echo "Pushing image to Nexus In Progress"
-                    sh "docker tag ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
-                    sh "docker push ${NEXUS_BUILD_IMAGE}"
-                    echo "Image pushed successfully"
-                }
-            }
-        }
+        // stage("Nexus Push") {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'nexus-credentials', usernameVariable:'USERNAME', passwordVariable:'PASSWORD')]) {
+        //             echo "Pushing Image to Nexus started"
+        //             sh "docker login http://13.233.37.182:8085/repository/docker-yatra-ms/ -u ${USERNAME} -p ${PASSWORD}"
+        //             echo "Pushing image to Nexus In Progress"
+        //             sh "docker tag ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+        //             sh "docker push ${NEXUS_BUILD_IMAGE}"
+        //             echo "Image pushed successfully"
+        //         }
+        //     }
+        // }
         stage("Delete local Docker Images"){
             steps {
-                echo "Deleting docker images : ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                echo "Deleting docker images : ${BUILD_IMAGE}"
                 // sh "docker rmi ${BUILD_IMAGE} ${ECR_BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
-                sh "docker rmi ${BUILD_IMAGE} ${NEXUS_BUILD_IMAGE}"
+                sh "docker rmi ${BUILD_IMAGE}"
                 echo "Deleted docker images successfully"
             }
         }       
